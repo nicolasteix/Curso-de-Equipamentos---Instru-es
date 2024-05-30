@@ -67,6 +67,25 @@ const flashcards = [
 
 const flashcardsContainer = document.getElementById('flashcards');
 
+// Função para verificar se o dispositivo é um celular
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+// Função para alternar entre pergunta e resposta do flashcard
+function toggleFlashcard(index) {
+    const content = document.getElementById(`flashcard-${index}`);
+    const flashcard = flashcards[index];
+    if (content.classList.contains('show-answer')) {
+        content.innerHTML = `<p>${flashcard.question}</p>`;
+        content.classList.remove('show-answer');
+    } else {
+        content.innerHTML = `<p>${flashcard.answer}</p>`;
+        content.classList.add('show-answer');
+    }
+}
+
+// Cria os flashcards
 flashcards.forEach((flashcard, index) => {
     const card = document.createElement('div');
     card.className = 'flashcard';
@@ -75,13 +94,19 @@ flashcards.forEach((flashcard, index) => {
             <p>${flashcard.question}</p>
         </div>
     `;
+
+    // Adiciona evento de clique para alternar entre pergunta e resposta
     card.addEventListener('click', () => {
-        const content = document.getElementById(`flashcard-${index}`);
-        content.innerHTML = `<p>${flashcard.answer}</p>`;
+        toggleFlashcard(index);
     });
-    card.addEventListener('mouseleave', () => {
-        const content = document.getElementById(`flashcard-${index}`);
-        content.innerHTML = `<p>${flashcard.question}</p>`;
-    });
+
+    // Adiciona evento de mouseleave apenas para dispositivos móveis
+    if (isMobileDevice()) {
+        card.addEventListener('mouseleave', () => {
+            toggleFlashcard(index);
+        });
+    }
+
     flashcardsContainer.appendChild(card);
 });
+
