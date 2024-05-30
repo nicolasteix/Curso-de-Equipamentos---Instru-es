@@ -73,14 +73,11 @@ function isMobileDevice() {
 }
 
 // Função para alternar entre pergunta e resposta do flashcard
-function toggleFlashcard(index) {
-    const content = document.getElementById(`flashcard-${index}`);
-    const flashcard = flashcards[index];
+function toggleFlashcard(event) {
+    const content = event.currentTarget.querySelector('.flashcard-content');
     if (content.classList.contains('show-answer')) {
-        content.innerHTML = `<p>${flashcard.question}</p>`;
         content.classList.remove('show-answer');
     } else {
-        content.innerHTML = `<p>${flashcard.answer}</p>`;
         content.classList.add('show-answer');
     }
 }
@@ -90,23 +87,21 @@ flashcards.forEach((flashcard, index) => {
     const card = document.createElement('div');
     card.className = 'flashcard';
     card.innerHTML = `
-        <div class="flashcard-content" id="flashcard-${index}">
+        <div class="flashcard-content">
             <p>${flashcard.question}</p>
+            <p class="answer">${flashcard.answer}</p>
         </div>
     `;
 
     // Adiciona evento de clique para alternar entre pergunta e resposta
-    card.addEventListener('click', () => {
-        toggleFlashcard(index);
-    });
+    card.addEventListener('click', toggleFlashcard);
 
     // Adiciona evento de mouseleave apenas para dispositivos móveis
     if (isMobileDevice()) {
-        card.addEventListener('mouseleave', () => {
-            toggleFlashcard(index);
-        });
+        card.addEventListener('touchend', toggleFlashcard);
     }
 
     flashcardsContainer.appendChild(card);
 });
+
 
