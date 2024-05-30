@@ -28,39 +28,21 @@ const flashcards = [
 
 const flashcardsContainer = document.getElementById('flashcards');
 
-// Função para verificar se o dispositivo é um celular
-function isMobileDevice() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-}
-
-// Função para alternar entre pergunta e resposta do flashcard
-function toggleFlashcard(event) {
-    const content = event.currentTarget.querySelector('.flashcard-content');
-    if (content.classList.contains('show-answer')) {
-        content.classList.remove('show-answer');
-    } else {
-        content.classList.add('show-answer');
-    }
-}
-
-// Cria os flashcards
 flashcards.forEach((flashcard, index) => {
     const card = document.createElement('div');
     card.className = 'flashcard';
     card.innerHTML = `
-        <div class="flashcard-content">
+        <div class="flashcard-content" id="flashcard-${index}">
             <p>${flashcard.question}</p>
-            <p class="answer">${flashcard.answer}</p>
         </div>
     `;
-
-    // Adiciona evento de clique para alternar entre pergunta e resposta
-    card.addEventListener('click', toggleFlashcard);
-
-    // Adiciona evento de mouseleave apenas para dispositivos móveis
-    if (isMobileDevice()) {
-        card.addEventListener('touchend', toggleFlashcard);
-    }
-
+    card.addEventListener('click', () => {
+        const content = document.getElementById(`flashcard-${index}`);
+        content.innerHTML = `<p>${flashcard.answer}</p>`;
+    });
+    card.addEventListener('mouseleave', () => {
+        const content = document.getElementById(`flashcard-${index}`);
+        content.innerHTML = `<p>${flashcard.question}</p>`;
+    });
     flashcardsContainer.appendChild(card);
 });
