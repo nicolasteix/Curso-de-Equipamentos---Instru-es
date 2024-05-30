@@ -68,3 +68,10 @@ body {
         height: auto; /* Remover altura fixa para permitir expansão */
     }
 }
+
+/* Estilos específicos para dispositivos móveis */
+@media only screen and (max-width: 768px) {
+    .mobile .flashcard {
+        cursor: default; /* Remover o cursor pointer */
+    }
+}
